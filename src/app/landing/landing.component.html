@@ -1,0 +1,506 @@
+<section class="open-account-area ptb-100" *ngIf="sectionShow">
+    <div class="container">
+        <div class="section-title">
+            <h2 style="margin-top: -30px;">Verify BVN</h2>
+        </div>
+        <div class="open-account-form">
+            <form nz-form [formGroup]="bvnForm">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 mb-3">
+                        <h6 style="text-align: center;">--- Verify BVN ---</h6>
+                    </div>
+                    <div class="col-lg-8 col-md-8">
+                        <div class="az-form-group">
+                            <nz-form-item style="margin-bottom: 9px !important;">
+                                <nz-form-control>
+                                    <label class="form-label" style="font-weight: 600; color: darkslategray;">BVN Number</label>
+                                    <nz-input-group [nzSuffix]="suffixTemplate">
+                                        <input maxlength="11" [type]="passwordVisible ? 'number' : 'password'" formControlName="bvn" nz-input placeholder="Enter BVN" [(ngModel)]="password" />
+                                    </nz-input-group>
+                                    <ng-template #suffixTemplate>
+                                        <i style="cursor: pointer;" nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+                                    </ng-template>
+                                    <span class="text-danger valiFontSizes" *ngIf="bvnForm.get('bvn').errors && (bvnForm.get('bvn').touched || bvnForm.get('bvn').dirty)">
+                                      <span *ngIf="bvnForm.get('bvn').errors.required">BVN is required</span>
+                                    <span *ngIf="bvnForm.get('bvn').errors.pattern">BVN is invalid</span><br>
+                                    <span *ngIf="bvnForm.get('bvn').errors.minlength">BVN shouldn't be less than 11</span>
+                                    </span>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4" style="margin-top: 20px;">
+                        <button nz-button [nzLoading]="isLoadingOne" nzType="primary" [disabled]="!bvnForm.valid" (click)="getBvnDetails()" nzSuccess style="background-color: #4BA145 !important; border: #4BA145;">Verify BVN</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="open-account-area ptb-100" *ngIf="sectionShow1">
+    <div class="container">
+        <div class="section-title">
+            <h2>Account opening form</h2>
+            <p>
+                A simple and easier way to open an account
+            </p>
+        </div>
+        <div class="open-account-form">
+            <form nz-form [formGroup]="addForm">
+                <div class="row">
+                    <div class="" id="contentToConvertToPdf">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-3 mt-4">
+                                <h6 style="text-align: center;">--- Customer Details ---</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 upload-btn-wrapper" *ngIf="showImage1" style="margin-bottom: 11.3px;">
+                                    <img [src]="uploadedFile" style="height: 130px; width: 130px; border-radius: 8px; border: 2px solid #D9D9D9" />
+                                    <input type="file" (change)="onFileSelect($event)" accept=".jpg,.png,.bmp" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 mb-3">
+                                    <div class="upload-btn-wrapper" *ngIf="uploadBtn">
+                                        <button class="btn">
+                                      <i nz-icon nzType="user" nzTheme="outline" style="font-size: 30px;"></i><br>
+                                      upload picture
+                                    </button>
+                                        <input type="file" (change)="onFileSelect($event)" accept=".jpg,.png,.bmp" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please input gender">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Gender</label>
+                                            <nz-select nzShowSearch formControlName="gender" [(ngModel)]="formBinding.gender" nzAllowClear nzPlaceHolder="Select Gender">
+                                                <nz-option nzLabel="Male" nzValue="M"></nz-option>
+                                                <nz-option nzLabel="Female" nzValue="F"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please input Salutation">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Salutation</label>
+                                            <nz-select nzShowSearch formControlName="salutation" nzAllowClear nzPlaceHolder="Select Salutation">
+                                                <nz-option nzLabel="Mr." nzValue="MR." *ngIf="formBinding.gender == 'M'"></nz-option>
+                                                <nz-option nzLabel="Mrs." nzValue="MRS." *ngIf="formBinding.gender == 'F'"></nz-option>
+                                                <nz-option nzLabel="Miss." nzValue="MISS." *ngIf="formBinding.gender == 'F'"></nz-option>
+                                                <nz-option nzLabel="Dr." nzValue="DR."></nz-option>
+                                                <nz-option nzLabel="Barr." nzValue="BARR."></nz-option>
+                                                <nz-option nzLabel="Chief." nzValue="CHIEF."></nz-option>
+                                                <nz-option nzLabel="Prof." nzValue="PROF."></nz-option>
+                                                <nz-option nzLabel="Messr." nzValue="MESSR."></nz-option>
+                                                <nz-option nzLabel="San." nzValue="SAN."></nz-option>
+                                                <nz-option nzLabel="M/S." nzValue="M/S."></nz-option>
+                                                <nz-option nzLabel="M&M." nzValue="M&M."></nz-option>
+                                                <nz-option nzLabel="Hon." nzValue="HON."></nz-option>
+                                                <nz-option nzLabel="Arch." nzValue="ARCH."></nz-option>
+                                                <nz-option nzLabel="Mast." nzValue="MAST."></nz-option>
+                                                <nz-option nzLabel="Evan." nzValue="EVAN."></nz-option>
+                                                <nz-option nzLabel="Rev." nzValue="REV."></nz-option>
+                                                <nz-option nzLabel="Hrh." nzValue="HRH."></nz-option>
+                                                <nz-option nzLabel="Otun." nzValue="OTUN."></nz-option>
+                                                <nz-option nzLabel="Elder." nzValue="ELDER."></nz-option>
+                                                <nz-option nzLabel="Mig." nzValue="MIG."></nz-option>
+                                                <nz-option nzLabel="Mistr." nzValue="MISTR."></nz-option>
+                                                <nz-option nzLabel="Mes." nzValue="MES."></nz-option>
+                                                <nz-option nzLabel="Past." nzValue="PAST."></nz-option>
+                                                <nz-option nzLabel="Engr." nzValue="ENGR."></nz-option>
+                                                <nz-option nzLabel="Deac." nzValue="DEAC."></nz-option>
+                                                <nz-option nzLabel="Just." nzValue="JUST."></nz-option>
+                                                <nz-option nzLabel="Alj." nzValue="ALJ."></nz-option>
+                                                <nz-option nzLabel="Mazi." nzValue="MAZI."></nz-option>
+                                                <nz-option nzLabel="Oba." nzValue="OBA."></nz-option>
+                                                <nz-option nzLabel="Exc." nzValue="EXC."></nz-option>
+                                                <nz-option nzLabel="High." nzValue="HIGH."></nz-option>
+                                                <nz-option nzLabel="Other." nzValue="Other."></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter your First Name!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">First Name</label>
+                                            <nz-input-group nzPrefixIcon="user">
+                                                <input type="text" nz-input [(ngModel)]="formFirstName" formControlName="firstName" placeholder="Enter First Name" readonly/>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter your Middle Name!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Middle Name</label>
+                                            <nz-input-group nzPrefixIcon="user-switch">
+                                                <input type="text" nz-input [(ngModel)]="formMiddleName" formControlName="middleName" placeholder="Enter Middle Name" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter your Last Name!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Last Name</label>
+                                            <nz-input-group nzPrefixIcon="user-delete">
+                                                <input type="text" [(ngModel)]="formLastName" formControlName="lastName" nz-input placeholder="Enter Last Name" readonly/>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control>
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Email</label>
+                                            <nz-input-group nzPrefixIcon="mail">
+                                                <input type="email" formControlName="email" nz-input placeholder="Enter Email" />
+                                            </nz-input-group>
+                                            <span class="text-danger valiFontSizes" *ngIf="addForm.get('email').errors && (addForm.get('email').touched || addForm.get('email').dirty)">
+                                              <span *ngIf="addForm.get('email').errors.required">Email is required</span>
+                                            <span *ngIf="addForm.get('email').errors.pattern">Email is invalid</span><br>
+                                            </span>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter your Address!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Address</label>
+                                            <!-- <nz-input-group nzPrefixIcon="environment">
+                    <input type="text" nz-input formControlName="address" placeholder="Enter Address" />
+                  </nz-input-group> -->
+
+                                            <nz-input-group nzCompact>
+                                                <input type="text" nz-input formControlName="address2" placeholder="00" style="width: 20%;" />
+                                                <input type="text" nz-input formControlName="address" placeholder="Enter Street" style="width:80%;" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter your Phone Number!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Phone Number</label>
+                                            <nz-input-group nzPrefixIcon="phone">
+                                                <input type="text" nz-input [(ngModel)]="formPhoneNumber" formControlName="phoneNumber" placeholder="Enter Phone Number" />
+                                            </nz-input-group>
+                                            <span class="text-danger valiFontSizes" *ngIf="addForm.get('phoneNumber').errors && (addForm.get('phoneNumber').touched || addForm.get('phoneNumber').dirty)">
+                                              <span *ngIf="addForm.get('phoneNumber').errors.required">Phone number is required</span>
+                                            <span *ngIf="addForm.get('phoneNumber').errors.pattern">Phone number is invalid</span><br>
+                                            </span>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please select Marital Status!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Marital Status</label>
+                                            <nz-select style="width: 100%;" formControlName="maritalStatus" [(ngModel)]="selectedValueMarital" nzShowSearch nzAllowClear nzPlaceHolder="Select Status">
+                                                <nz-option *ngFor="let list of maritalArray" [nzValue]="list.value" [nzLabel]="list.name"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter Introducer code!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Introducer Code</label>
+                                            <nz-input-group nzPrefixIcon="field-number">
+                                                <input type="text" formControlName="introducerCode" nz-input placeholder="Enter Inrtoducer Code" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter App Id!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">App ID</label>
+                                            <nz-input-group nzPrefixIcon="field-binary">
+                                                <input type="text" formControlName="appId" [(ngModel)]="formBinding.appId" nz-input placeholder="Enter App Id" readonly/>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div> -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <div class="">
+                                    <label class="form-label" style="font-weight: 600; color: darkslategray;">Select State Of Origin</label>
+                                    <nz-select style="width: 100%;" formControlName="state" [(ngModel)]="selectedValueState" nzShowSearch nzAllowClear nzPlaceHolder="Select State">
+                                        <nz-option *ngFor="let list of stateArray" [nzValue]="list.value" [nzLabel]="list.name"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <div class="">
+                                    <label class="form-label" style="font-weight: 600; color: darkslategray;">Select Local Goverment Of Origin</label>
+                                    <nz-select style="width: 100%;" formControlName="city" [(ngModel)]="selectedValueCity" nzShowSearch nzAllowClear nzPlaceHolder="Select City">
+                                        <nz-option *ngFor="let list of cityArray" [nzValue]="list.value" [nzLabel]="list.name"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                            <nz-spin [nzSpinning]="isSpinning">
+                                <div class="col-lg-12 col-md-12 mb-3">
+                                    <div class="">
+                                        <label class="form-label" style="font-weight: 600; color: darkslategray;">Select Branch State</label>
+                                        <nz-select style="width: 100%;" formControlName="branchState" (ngModelChange)="getBranchByState()" [(ngModel)]="selectedValueState2" nzShowSearch nzAllowClear nzPlaceHolder="Select State">
+                                            <nz-option *ngFor="let list of stateArray2" [nzValue]="list.value" [nzLabel]="list.name"></nz-option>
+                                        </nz-select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 mb-3">
+                                    <div class="">
+                                        <label class="form-label" style="font-weight: 600; color: darkslategray;">Select Branch</label>
+                                        <nz-select style="width: 100%;" formControlName="solId" nzShowSearch nzAllowClear nzPlaceHolder="Select State">
+                                            <nz-option *ngFor="let list of stateBranchDetails" [nzValue]="list.branchcode" [nzLabel]="list.branchname"></nz-option>
+                                        </nz-select>
+                                    </div>
+                                </div>
+                            </nz-spin>
+                            <div class="col-lg-12 col-md-12 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please select profile alert!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Profile Alert</label>
+                                            <nz-input-group nzPrefixIcon="audio">
+                                                <input type="text" formControlName="profileAlert" [(ngModel)]="formBinding.profileAlert" nz-input placeholder="YES" readonly/>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter unique key!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Unique Key</label>
+                                            <nz-input-group nzPrefixIcon="key">
+                                                <input type="text" formControlName="uniqueKey" nz-input [(ngModel)]="formBinding.uniqueKey" placeholder="E6A9C647-B9E1-446A-A7F6-C33EDFEBFDB1" readonly/>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 mb-2 mt-3" *ngIf="showImage2">
+                                    <img [src]="uploadedFile2" style="height: 130px; width: 130px;" />
+                                </div>
+                            </div>
+                            <!-- <div class="row" *ngIf="showImage2">
+                                <div class="col-md-4" *ngFor="let uploadededFile of uploadedFile2Array">
+                                    <img [src]="uploadededFile" style="height: 100px; width: 200px;" />
+                                </div>
+                            </div> -->
+                            <div class="col-lg-12 col-md-12 mb-2">
+                                <div class="az-form-group mt-2">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please upload Signature only jpg format!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;"> Signature Upload</label>
+                                            <nz-input-group>
+                                                <input type="file" (change)="onFileSelect2($event)" accept=".jpg,.png,.bmp" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <!-- <div class="" *ngIf="showUploadDocument">
+                                <div class="col-lg-3 col-md-3 mb-2 mt-2" *ngFor="let uploadDoc of uploadedDocs" style="height: 100px; width: 200px;">
+                                    <pdf-viewer [src]="uploadDoc" [render-text]="true" style="display: block;"></pdf-viewer>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-lg-6 col-md-6 mb-2">
+                                <div class="az-form-group mt-2">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please upload Signature only jpg format!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;"> Document Upload</label>
+                                            <nz-input-group>
+                                                <input type="file" (change)="onFileSelectMultiple($event)" accept="application/pdf" multiple="multiple" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div> -->
+                            <div class="col-lg-12 col-md-12 mb-2">
+                                <div class="row row-xs mt-3">
+                                    <div class="col-md-12" formArrayName="documents">
+                                        <div class="az-form-group">
+                                            <label class="form-label mb-3" style="font-weight: 600; color: darkslategray;">Document Upload</label>
+                                            <nz-form-item *ngFor="let document of uploadDocuments().controls; let sigIndex=index">
+                                                <div class="col-md-12 pl-0 pr-0 d-flex" [formGroupName]="sigIndex" style="border-left: 0px !important;">
+                                                    <div class="col-md-10 pl-0 pr-2">
+                                                        <nz-form-item>
+                                                            <nz-input-group>
+                                                                <input type="file" (change)="onFileSelectMultiSingle($event)" accept="application/pdf" />
+                                                            </nz-input-group>
+                                                        </nz-form-item>
+                                                    </div>
+                                                    <div class="col-md-2 pull-right">
+                                                        <i nz-icon nzType="minus-circle-o" class="float-right mt-1" style="cursor: pointer; color: #999; font-size: 24px; transition: all 0.3s;" (click)="removeDocuments(sigIndex)"></i>
+                                                    </div>
+                                                </div>
+                                            </nz-form-item>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-xs mt-3">
+                                    <div class="col-md-12 text-center">
+                                        <nz-form-item>
+                                            <nz-form-control>
+                                                <button nz-button nzType="dashed" class="add-button" (click)="addDocuments()">
+                                  <i nz-icon nzType="plus"></i>
+                                  Upload New Document
+                                </button>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                                <!-- <div class="az-form-group mt-2">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please upload Signature only jpg format!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;"> Document Upload</label>
+                                            <nz-input-group>
+                                                <input type="file" (change)="onFileSelectMultiple($event)" accept="application/pdf" multiple="multiple" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div> -->
+                            </div>
+                            <!-- <div class="col-lg-12 col-md-12 mb-2">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please select request card">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Request Card</label>
+                                            <nz-select nzShowSearch [(ngModel)]="requestCardShow" formControlName="requestCard" nzAllowClear nzPlaceHolder="Select">
+                                                <nz-option nzLabel="Yes" nzValue="Y"></nz-option>
+                                                <nz-option nzLabel="No" nzValue="N"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div> -->
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="requestCardShow == 'Y'">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please select delivery option">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Delivery Option</label>
+                                            <nz-select nzShowSearch [(ngModel)]="selectDeliveryTypeShow" formControlName="deliveryOption" nzAllowClear nzPlaceHolder="Select">
+                                                <nz-option nzLabel="Branch Pickup" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="Home Delivery" nzValue="2"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="selectDeliveryTypeShow == '1'">
+                                <div class="">
+                                    <label class="form-label" style="font-weight: 600; color: darkslategray;">Select Branch</label>
+                                    <nz-select style="width: 100%;" formControlName="pickupBranch" nzShowSearch nzAllowClear nzPlaceHolder="Select State">
+                                        <nz-option *ngFor="let list of allBranchList" [nzValue]="list.branchId" [nzLabel]="list.branchDescription"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="selectDeliveryTypeShow == '2'">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please enter your bvn!">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Delivery Address</label>
+                                            <nz-input-group nzPrefixIcon="environment">
+                                                <input type="text" formControlName="cardDeliveryAddress" nz-input placeholder="Enter Delivery Address" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="requestCardShow == 'Y'">
+                                <div class="az-form-group">
+                                    <nz-form-item style="margin-bottom: 9px !important;">
+                                        <nz-form-control nzErrorTip="Please input gender">
+                                            <label class="form-label" style="font-weight: 600; color: darkslategray;">Card Type</label>
+                                            <nz-select nzShowSearch formControlName="cardType" nzAllowClear nzPlaceHolder="Select Card Type">
+                                                <nz-option nzLabel="Master Card" nzValue="Master Card"></nz-option>
+                                                <nz-option nzLabel="Verve Card" nzValue="Verve Card"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-2 d-flex">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <button nz-button nzBlock nzType="primary" (click)="convertToPdf()" style="background-color: #4BA145 !important; border: #4BA145; float: right;"><i nz-icon nzType="download"></i>Download Form Data</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 mb-2">
+                        <button nz-button nzType="primary" nzBlock nzLoading *ngIf="submitFormButton2" style="background-color: #e49712 !important; border: #e49712;"><i nz-icon nzType="poweroff"></i>Creating Account</button>
+                        <button nz-button nzType="primary" [disabled]="addForm.value.solId === ''" *ngIf="submitFormButton" (click)="getOpenAccount()" nzBlock style="background-color: #4BA145; border: #4BA145;">Create Account</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="ptb-100" *ngIf="sectionShow2">
+    <div class="container">
+        <div class="section-title">
+            <h2>Account Number</h2>
+        </div>
+        <div class="open-account-form">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-3">
+                    <h6 style="text-align: center;" class="mb-2">--- Your Account Number ---</h6>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="az-form-group">
+                        <nz-form-item style="margin-bottom: 9px !important;">
+                            <nz-form-control nzErrorTip="Please enter your First Name!">
+                                <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
+                                    <input type="text" [(ngModel)]="accountNumberdetail" nz-input placeholder="Account Number" readonly/>
+                                </nz-input-group>
+                                <ng-template #suffixIconButton>
+                                    <button nz-button class="mt-0" nzType="primary" nzSize="large" (click)="copyAccountNumber()" nzTooltipTitle="Copy Account Number" nzTooltipPlacement="topRight" nz-tooltip nzSearch style="background-color: #4BA145 !important; border: #4BA145;"><i nz-icon nzType="file"></i></button>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 mt-4">
+                    <button nz-button nzBlock nzType="primary" (click)="anotherAccount()" nzSuccess style="background-color: #4BA145 !important; border: #4BA145;">Create another account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
